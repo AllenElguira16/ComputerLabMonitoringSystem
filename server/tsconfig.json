@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types"],
+    "moduleResolution": "node",
+    "target": "es6",
+    "module": "commonjs",
+    "baseUrl": "src",
+    "outDir": "dist",
+    "lib": ["esnext"],
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowJs": true,
+    "strict": true,
+    "types": ["./src/types"]
+  },
+  "include": ["src"],
+  "exclude": ["dist"]
+}
