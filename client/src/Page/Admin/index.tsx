@@ -4,13 +4,12 @@ import {
   CardHeader,
   CardBody,
   Nav,
-  NavItem,
-  NavLink,
   Container
 } from "reactstrap";
 import NavItemLink from "../../Components/NavItemLink";
 import { Route } from "react-router-dom";
 import Students from "./Students";
+import History from "./History";
 
 const Admin: React.FC = () => {
   return (
@@ -24,6 +23,7 @@ const Admin: React.FC = () => {
         </CardHeader>
         <CardBody>
           <Route path="/admin/students" component={Students} />
+          <Route path="/admin/history" component={History} />
         </CardBody>
       </Card>
     </Container>

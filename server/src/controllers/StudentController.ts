@@ -11,19 +11,20 @@ import {
 import { MongooseModel } from "@tsed/mongoose";
 import SocketService from "services/SocketService";
 import Student from "models/Student";
+import History from "../models/History";
 // import { User } from "type";
 
 @Controller("/students")
 class StudentController {
   constructor(
-    @Inject(Student)
-    private studentModel: MongooseModel<Student>,
+    @Inject(Student) private studentModel: MongooseModel<Student>,
+    @Inject(History) private history: MongooseModel<History>,
     private socketService: SocketService
   ) {}
 
   @Get()
-  async fetch() {
-    return await this.studentModel.find();
+  fetch() {
+    return this.studentModel.find();
   }
 
   /**
@@ -34,24 +35,14 @@ class StudentController {
   async addStudent(@BodyParams() studentForm: StudentForm) {
     try {
       const { schoolID, firstname, lastname, course } = studentForm;
-      if (
-        schoolID === "" &&
-        firstname === "" &&
-        lastname === "" &&
-        course === ""
-      )
+      if (schoolID === "" && firstname === "" && lastname === "" && course === "")
         throw "Input Fields are Empty";
 
       // Check if user exists
       if ((await this.studentModel.countDocuments({ schoolID })) !== 0)
         throw "SchoolID already exists!";
 
-      const student = new this.studentModel({
-        schoolID,
-        firstname,
-        lastname,
-        course
-      });
+      const student = new this.studentModel(studentForm);
       await student.save();
     } catch (error) {
       if (error) return { error };
@@ -60,9 +51,9 @@ class StudentController {
   }
 
   @Put()
-  async editStudent(@BodyParams() studentForm: Student) {
+  async editStudent(@BodyParams() {_id, ...studentForm}: Student) {
     try {
-      const { _id, schoolID, firstname, lastname, course } = studentForm;
+      const { schoolID, firstname, lastname, course } = studentForm;
       if (
         schoolID === "" &&
         firstname === "" &&
@@ -80,9 +71,6 @@ class StudentController {
           lastname: studentModel.lastname,
           course: studentModel.course
         };
-        // console.table(student);
-        // console.table(studentForm);
-        // console.log(student._id === studentForm._id);
         if (this.isEquivalent(studentForm, student))
           throw "No changes have been made";
 
@@ -95,16 +83,7 @@ class StudentController {
           throw "SchoolID already exists!";
       }
 
-      await this.studentModel
-        .findByIdAndUpdate(_id, {
-          schoolID,
-          firstname,
-          lastname,
-          course
-        })
-        .exec();
-      // await student.exec();
-      // console.log();
+      await this.studentModel.findByIdAndUpdate(_id, studentForm).exec();
     } catch (error) {
       if (error) return { error };
     }
@@ -113,8 +92,8 @@ class StudentController {
 
   isEquivalent(a: any, b: any) {
     // Create arrays of property names
-    var aProps = Object.getOwnPropertyNames(a);
-    var bProps = Object.getOwnPropertyNames(b);
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
 
     // If number of properties is different,
     // objects are not equivalent
@@ -122,8 +101,8 @@ class StudentController {
       return false;
     }
 
-    for (var i = 0; i < aProps.length; i++) {
-      var propName = aProps[i];
+    for (let i = 0; i < aProps.length; i++) {
+      const propName = aProps[i];
 
       // If values of same property are not equal,
       // objects are not equivalent
@@ -153,6 +132,8 @@ class StudentController {
       const student = await this.studentModel.findOne({ schoolID });
       if (!student) throw "Student not found!";
 
+      const newHistory = new this.history({schoolID});
+      await newHistory.save();
       this.socketService.closeWindow();
       return { success: student };
     } catch (error) {

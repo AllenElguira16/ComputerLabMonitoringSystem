@@ -12,3 +12,9 @@ interface ServerResponse {
   error?: string;
   success?: string;
 }
+
+interface History {
+  id?: string;
+  schoolID: string;
+  timeEntered: Date;
+}

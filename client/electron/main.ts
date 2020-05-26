@@ -21,7 +21,7 @@ function createWindow() {
   win.setAlwaysOnTop(true, "normal");
 
   if (isDev) {
-    win.loadURL("http://localhost:3000");
+    win.loadURL("http://localhost:3000/home");
   } else {
     // 'build/index.html'
     win.loadURL(`file://${__dirname}/../index.html`);

@@ -9,7 +9,7 @@ const StudentLists: React.FC = () => {
   const { students, getStudents } = React.useContext(StudentStore);
   const [editModal, setEditModal] = React.useState(false);
   const [deleteModal, setDeleteModal] = React.useState(false);
-  const [idToDelete, setIdToDelete] = React.useState();
+  const [idToDelete, setIdToDelete] = React.useState<string>('');
 
   const toggleEditModal = () => setEditModal(!editModal);
   const toggleDeleteModal = () => setDeleteModal(!deleteModal);
@@ -31,10 +31,7 @@ const StudentLists: React.FC = () => {
   };
 
   React.useEffect(() => {
-    async function getStudentsAsync() {
-      await getStudents();
-    }
-    getStudentsAsync();
+    (async () => await getStudents())();
   }, [getStudents]);
 
   return (
@@ -50,8 +47,7 @@ const StudentLists: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {students &&
-            students.map((student, key) => (
+          {students?.map((student, key) => (
               <tr key={key}>
                 <td>{student.schoolID}</td>
                 <td>{student.firstname}</td>
@@ -70,7 +66,7 @@ const StudentLists: React.FC = () => {
                   <Button
                     color="danger"
                     onClick={() => {
-                      setIdToDelete(student.id);
+                      setIdToDelete(student.id as string);
                       toggleDeleteModal();
                     }}
                   >
