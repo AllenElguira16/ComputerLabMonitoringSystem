@@ -52,11 +52,15 @@ export class Server extends ServerLoader {
       .use(
         session({
           secret: "the-greatest-secret-key",
-          resave: true,
+          resave: false,
           saveUninitialized: true,
           store: new mongoInstance({
             mongooseConnection: mongoose.connection
-          })
+          }),
+          cookie: {
+            // sameSite: true,
+            secure: 'auto',
+          },
         })
       );
   }
