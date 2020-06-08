@@ -8,7 +8,7 @@ class HistoryController {
 
   @Get()
   public getHistories() {
-    return this.history.find();
+    return this.history.find().populate('student');
   }
 }
 

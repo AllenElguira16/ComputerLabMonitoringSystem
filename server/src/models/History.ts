@@ -1,5 +1,6 @@
-import { Model, ObjectID } from "@tsed/mongoose";
+import {Model, ObjectID, Ref} from "@tsed/mongoose";
 import { Property, Default } from "@tsed/common";
+import Student from "./Student";
 
 @Model()
 class History {
@@ -7,7 +8,8 @@ class History {
   public _id!: string;
 
   @Property()
-  public schoolID!: string;
+  @Ref(Student)
+  public student!: Student;
 
   @Property()
   @Default(Date.now())

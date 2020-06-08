@@ -15,6 +15,6 @@ interface ServerResponse {
 
 interface History {
   id?: string;
-  schoolID: string;
+  student: Student;
   timeEntered: Date;
 }

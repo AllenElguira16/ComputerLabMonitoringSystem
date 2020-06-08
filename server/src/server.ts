@@ -25,8 +25,8 @@ const mongoInstance = connectMongo(session);
   },
   mongoose: {
     url:
-      // "mongodb+srv://user:user@clustersofstars-renyu.mongodb.net/SIMIS?retryWrites=true&w=majority",
-      "mongodb://localhost:27017/clms-lnu",
+      "mongodb+srv://user:user@clustersofstars-renyu.mongodb.net/CLMS-LNU?retryWrites=true&w=majority",
+      // "mongodb://localhost:27017/clms-lnu",
     connectionOptions: {
       useNewUrlParser: true,
       useFindAndModify: false,
@@ -52,15 +52,11 @@ export class Server extends ServerLoader {
       .use(
         session({
           secret: "the-greatest-secret-key",
-          resave: false,
+          resave: true,
           saveUninitialized: true,
           store: new mongoInstance({
             mongooseConnection: mongoose.connection
-          }),
-          cookie: {
-            // sameSite: true,
-            secure: "auto"
-          }
+          })
         })
       );
   }

@@ -132,7 +132,7 @@ class StudentController {
       const student = await this.studentModel.findOne({ schoolID });
       if (!student) throw "Student not found!";
 
-      const newHistory = new this.history({schoolID});
+      const newHistory = new this.history({student});
       await newHistory.save();
       this.socketService.closeWindow();
       return { success: student };

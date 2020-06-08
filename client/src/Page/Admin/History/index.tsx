@@ -16,13 +16,17 @@ const History: React.FC = () => {
       <thead>
       <tr>
         <th>SchoolID</th>
+        <th>Name</th>
+        <th>Course</th>
         <th>Time Entered</th>
       </tr>
       </thead>
       <tbody>
       {histories.map((history, key) => (
           <tr key={key}>
-            <td>{history.schoolID}</td>
+            <td>{history.student.id}</td>
+            <td>{history.student.firstname} {history.student.lastname}</td>
+            <td>{history.student.course}</td>
             <td>{moment(history.timeEntered).format('MMMM Do YYYY, h:mm a')}</td>
           </tr>
         ))}
