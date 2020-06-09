@@ -15,6 +15,7 @@ interface ServerResponse {
 
 interface History {
   id?: string;
+  pcNo: string;
   student: Student;
   timeEntered: Date;
 }

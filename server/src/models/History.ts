@@ -8,6 +8,9 @@ class History {
   public _id!: string;
 
   @Property()
+  public pcNo!: string;
+
+  @Property()
   @Ref(Student)
   public student!: Student;
 

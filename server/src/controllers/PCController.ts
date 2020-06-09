@@ -4,12 +4,12 @@ import {Controller, Get, QueryParams, Session} from "@tsed/common";
 class PCController {
   @Get()
   public getSession(@Session() session: any) {
-    return session.pc_no;
+    return session.pcNo;
   }
 
   @Get('/set')
   public setSession(@QueryParams() params: any, @Session() session: any) {
-    session.pc_no = params.pc_no;
+    session.pcNo = params.pc_no;
     return true;
   }
 }

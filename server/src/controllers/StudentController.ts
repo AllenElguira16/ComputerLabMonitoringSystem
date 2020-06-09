@@ -6,7 +6,7 @@ import {
   BodyParams,
   Put,
   Delete,
-  PathParams
+  PathParams, Session
 } from "@tsed/common";
 import { MongooseModel } from "@tsed/mongoose";
 import SocketService from "services/SocketService";
@@ -127,12 +127,12 @@ class StudentController {
   }
 
   @Post("/login")
-  async login(@BodyParams() { schoolID }: Pick<StudentForm, "schoolID">) {
+  async login(@BodyParams() { schoolID }: Pick<StudentForm, "schoolID">, @Session() session: any) {
     try {
       const student = await this.studentModel.findOne({ schoolID });
       if (!student) throw "Student not found!";
 
-      const newHistory = new this.history({student});
+      const newHistory = new this.history({student, pcNo: session.pcNo});
       await newHistory.save();
       this.socketService.closeWindow();
       return { success: student };
