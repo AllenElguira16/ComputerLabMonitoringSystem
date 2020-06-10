@@ -23,21 +23,6 @@ const Login: React.FC = () => {
   const {isSet, pc_no, getPCNo, setPCNo} = React.useContext(PCStore);
 
   React.useEffect(function () {
-    // async function doSetup(): Promise<void> {
-    //   if (!await getPCNo()) {
-    //     return;
-    //   }
-    //
-    //   // const newPcNo = window.prompt('Set PC Number', '');
-    //
-    //   if (newPcNo === null || newPcNo.length === 0) {
-    //     return doSetup();
-    //   }
-    //   await setPCNo(newPcNo);
-    //   await getPCNo();
-    // }
-    // (async () => doSetup())();
-    // console.log();
     (async () => await getPCNo())();
   }, [getPCNo]);
 
@@ -57,8 +42,6 @@ const Login: React.FC = () => {
   const sendPCNo = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (pcNoInput !== null && pcNoInput.length !== 0) {
-      // Rerender component
-      //     return doSetup();
       await setPCNo(pcNoInput);
     }
   };

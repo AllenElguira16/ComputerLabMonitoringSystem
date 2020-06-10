@@ -9,22 +9,23 @@ import * as io from "socket.io-client";
 let win: BrowserWindow | null = null;
 const socket = io("http://localhost:8000");
 
-function createWindow() {
+async function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    frame: false,
     webPreferences: {
       nodeIntegration: true
     }
   });
 
   win.setAlwaysOnTop(true, "normal");
+  win.setMenu(null);
+  win.maximize();
 
   if (isDev) {
-    win.loadURL("http://localhost:3000/home");
+    await win.loadURL("http://localhost:3000/home");
   } else {
     // 'build/index.html'
-    win.loadURL(`file://${__dirname}/../index.html`);
+    await win.loadURL(`file://${__dirname}/../index.html`);
   }
 
   win.on("closed", () => (win = null));
@@ -64,9 +65,9 @@ app.on("window-all-closed", () => {
   }
 });
 
-app.on("activate", () => {
+app.on("activate", async () => {
   if (win === null) {
-    createWindow();
+    await createWindow();
   }
 });
 
